@@ -183,3 +183,39 @@ def test_leg_plan_clamps_jumps():
     assert PlanLegs(50, 80) == [50]
     assert 0.3 <= BetweenLegsPause() <= 0.8
     assert LegDuration(80, 200) > 0
+
+
+def test_queue_whitelist():
+    q = QueueNew()
+    assert QueuePush(q, "StartQuest", {"a": 1}) is True
+    assert QueuePush(q, "DeleteAllData", {}) is False
+    assert QueuePush(q, "hit", {}) is True
+    assert len(q["pending"]) == 1
+    nxt = QueueRelease(q)
+    assert nxt == {"verb": "hit", "args": {}}
+
+
+WHITELIST = {"StartQuest", "SetTeam", "StoreFruit", "getInventoryFruits", "weaponChange", "hit", "requestEntrance"}
+
+def QueueNew():
+    return {"inflight": 0, "pending": []}
+
+def QueuePush(q, verb, args):
+    if q is None:
+        return False
+    if verb not in WHITELIST:
+        return False
+    if q["inflight"] >= 1:
+        q["pending"].append({"verb": verb, "args": args})
+    else:
+        q["inflight"] = 1
+    return True
+
+def QueueRelease(q):
+    if q is None:
+        return None
+    q["inflight"] = 0
+    if q["pending"]:
+        q["inflight"] = 1
+        return q["pending"].pop(0)
+    return None
