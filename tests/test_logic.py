@@ -10,16 +10,20 @@ def test_boot_gate_blocks_farm_on_missing_dep():
 
 
 def test_queue_single_flight():
-    assert QueueDepth({"inflight": 0, "pending": 3}) == 3
+    assert QueueDepth({"inflight": 0, "pending": [1,2,3]}) == 3
+    assert QueueDepth({"inflight": 0, "pending": []}) == 0
+    assert QueueDepth({"inflight": 0, "pending": [1, 2]}) == 2
+    assert QueueDepth({"inflight": 1, "pending": [1, 2]}) == 3
     assert SuspicionAdd(0, "teleport") == 10
     assert AfkDue(1199, False) is True
     assert AfkDue(60, False) is False
 
 
 def QueueDepth(q):
-    if q["inflight"] >= 1:
-        return 1 + len(q.get("pending_list", [1, 2, 3])[:3])
-    return 3
+    pending = q.get("pending", [])
+    if q.get("inflight", 0) >= 1:
+        return 1 + len(pending)
+    return len(pending)
 
 def SuspicionAdd(s, ev):
     return s + {"teleport": 10, "rate": 8, "range": 6, "airtime": 4}.get(ev, 2)
@@ -38,6 +42,8 @@ def test_tween_caps():
 
 
 def _clamp_speed(s):
+    if s is None or s <= 0:
+        return 200
     return 250 if s > 250 else s
 
 def TweenDuration(dist, speed):
