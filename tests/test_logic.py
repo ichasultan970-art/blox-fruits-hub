@@ -54,7 +54,7 @@ def SplitLegs(dist):
 
 
 def test_combat_pacing_bounds():
-    d = AttackDelayMid()
+    d = AttackDelay()
     assert 0.3 <= d <= 0.5
     assert IsInRange(6.5) is True
     assert IsInRange(30) is False
@@ -62,8 +62,6 @@ def test_combat_pacing_bounds():
     assert BringOk(8) is False
 
 
-def AttackDelayMid():
-    return 0.4
 
 def IsInRange(d):
     return d <= 7

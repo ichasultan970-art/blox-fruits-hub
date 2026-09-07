@@ -1,4 +1,3 @@
--- TODO(Task 9): LOADING/FARMING states + Shared {Queue, State, Deps} composition (scaffold covers SAFE/READY/UPDATE-PENDING only)
 local UI = {}
 function UI.State(depsOk, patchGap)
     if patchGap == true then return "UPDATE-PENDING" end

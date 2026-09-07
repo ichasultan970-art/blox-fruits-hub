@@ -24,11 +24,6 @@ end
 --     local action = Farm.Tick(Shared.State, 0.15, Combat.IsInRange(dist) and Combat.BringOk(n), Combat.AttackDelay())
 --     if action == "fire" then Safety.QueuePush(Shared.Queue, "hit", {}) end
 -- end)
--- Anti-AFK (single input reset, no loops) + suspicion decay hooks for the same loop:
--- local idleAt = os.clock()
--- game:GetService("Players").LocalPlayer.Idled:Connect(function()
---     game:GetService("VirtualUser"):ClickButton2(Vector2.new())
---     idleAt = os.clock()
--- end)
+-- Suspicion decay (bonus, ikut loop Heartbeat yang sama):
 -- Shared.State.suspicion = math.max(0, Shared.State.suspicion - dt * 0.5)
 return Farm

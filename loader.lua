@@ -13,12 +13,19 @@ end
 -- local ok, comm = pcall(function() return Remotes:WaitForChild("CommF_", 5) end)
 -- local quests = game:GetService("Workspace"):FindFirstChild("Quests")
 -- Shared.Deps = Loader.BuildDeps(ok and comm ~= nil, quests ~= nil)
--- if Loader.DepsOk(Shared.Deps) ~= true then UI.State(false, false) end -- SAFE, ESP only
+-- if Loader.DepsOk(Shared.Deps) ~= true then UI.StateEx(false, false, false, "none") end -- SAFE, ESP only
 -- Module tree so `require(script.Parent.rand)` (Tasks 1-2) resolves in-game:
--- local REPO = "https://raw.githubusercontent.com/<user>/blox-fruits-hub/main/"
--- local root = Instance.new("Folder"); root.Name = "Hub"; root.Parent = gethui()
+-- FILL-IN WAJIB sebelum soak: ganti dengan URL raw repo GitHub kamu (contoh di bawah).
+-- local REPO = "GANTI_DENGAN_URL_RAW_MILIKMU_HARUS_DIAKHIRI_SLASH/"
+-- contoh: "https://raw.githubusercontent.com/NAMAMU/blox-fruits-hub/main/"
+-- local root = Instance.new("Folder"); root.Name = "Hub"; local _hui = (gethui and gethui()) or game:GetService("CoreGui"); root.Parent = _hui
 -- for _, name in ipairs({"rand","combat","teleport","safety","shared","autofarm","esp","sea_raid","ui"}) do
 --     local m = Instance.new("ModuleScript"); m.Name = name
---     m.Source = game:HttpGet(REPO .. "modules/" .. name .. ".lua"); m.Parent = root
+--     local okSrc, src = pcall(game.HttpGet, game, REPO .. "modules/" .. name .. ".lua")
+--     if okSrc ~= true then warn("Hub: gagal unduh modul " .. name) else m.Source = src; m.Parent = root end
 -- end
+-- Anti-AFK global (aktif walau modul farm tidak dimuat):
+-- game:GetService("Players").LocalPlayer.Idled:Connect(function()
+--     game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+-- end)
 return Loader
