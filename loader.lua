@@ -1,5 +1,5 @@
 local Loader = {}
-Loader.VERSION = "1.4.0"
+Loader.VERSION = "1.5.0"
 function Loader.DepsOk(deps)
     if deps == nil then return false end
     if deps.CommF_ ~= true then return false end
@@ -97,6 +97,7 @@ do
     game:GetService("Players").LocalPlayer.Idled:Connect(function()
         game:GetService("VirtualUser"):ClickButton2(Vector2.new())
     end)
-    say("anti-AFK aktif. Boot selesai.")
+    say("anti-AFK aktif. ESP label musuh/peti/NPC menyala.")
+    say("Boot selesai.")
 end
 return Loader
