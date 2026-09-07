@@ -16,7 +16,7 @@ end
 -- if Loader.DepsOk(Shared.Deps) ~= true then UI.StateEx(false, false, false, "none") end -- SAFE, ESP only
 -- Module tree so `require(script.Parent.rand)` (Tasks 1-2) resolves in-game:
 -- FILL-IN WAJIB sebelum soak: ganti dengan URL raw repo GitHub kamu (contoh di bawah).
--- local REPO = "GANTI_DENGAN_URL_RAW_MILIKMU_HARUS_DIAKHIRI_SLASH/"
+-- local REPO = "https://raw.githubusercontent.com/ichasultan970-art/blox-fruits-hub/main/"
 -- contoh: "https://raw.githubusercontent.com/NAMAMU/blox-fruits-hub/main/"
 -- local root = Instance.new("Folder"); root.Name = "Hub"; local _hui = (gethui and gethui()) or game:GetService("CoreGui"); root.Parent = _hui
 -- for _, name in ipairs({"rand","combat","teleport","safety","shared","autofarm","esp","sea_raid","ui"}) do
