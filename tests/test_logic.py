@@ -45,3 +45,22 @@ def TweenDuration(dist, speed):
 
 def SplitLegs(dist):
     return 3 if dist > 1500 else 1
+
+
+def test_combat_pacing_bounds():
+    d = AttackDelayMid()
+    assert 0.3 <= d <= 0.5
+    assert IsInRange(6.5) is True
+    assert IsInRange(30) is False
+    assert BringOk(4) is True
+    assert BringOk(8) is False
+
+
+def AttackDelayMid():
+    return 0.4
+
+def IsInRange(d):
+    return d <= 7
+
+def BringOk(n):
+    return n <= 5
