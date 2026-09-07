@@ -134,3 +134,27 @@ def UiState(depsOk, patchGap):
     if depsOk is not True:
         return "SAFE"
     return "READY"
+
+
+def test_pacing_is_randomized():
+    ds = [AttackDelay() for _ in range(50)]
+    assert all(0.3 <= d <= 0.5 for d in ds)
+    assert max(ds) - min(ds) > 0.05
+    cs = [ClickDelay() for _ in range(50)]
+    assert all(0.05 <= c <= 0.21 for c in cs)
+    assert max(cs) - min(cs) > 0.02
+
+
+import random
+
+def Uniform(lo, hi):
+    return lo + (hi - lo) * random.random()
+
+def Jitter(base, amp):
+    return base + (random.random() * 2 - 1) * amp
+
+def AttackDelay():
+    return Uniform(0.3, 0.5)
+
+def ClickDelay():
+    return max(0.05, Jitter(Uniform(0.12, 0.18), 0.03))
