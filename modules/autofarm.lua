@@ -38,8 +38,17 @@ do
     local hasGame = (game ~= nil and type(game.GetService) == "function")
     if hasGame == true and getgenv ~= nil and getgenv().HubFarm == true and getgenv().HubFarmRunning ~= true then
         local Mods = getgenv().HubFarm_Mods
+        local function say(msg)
+            print("[Farm] " .. msg)
+            pcall(function()
+                game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
+                    Text = "[Farm] " .. msg, Color = Color3.fromRGB(255, 200, 0),
+                    Font = Enum.Font.Code, FontSize = Enum.FontSize.Size18,
+                })
+            end)
+        end
         if Mods == nil or Mods.combat == nil or Mods.teleport == nil or Mods.sea == nil then
-            print("[Hub] farm butuh loader v1.6+ (modul silang tidak ada)")
+            say("gagal start: modul silang tidak ada")
         else
             getgenv().HubFarmRunning = true
             local Combat, Teleport, Sea = Mods.combat, Mods.teleport, Mods.sea
@@ -51,15 +60,6 @@ do
             local FState = { quest = true, at_mob = false, cooldown = 0 }
             local Trav = { target = nil, tween = nil, legs = {}, li = 1, pauseUntil = 0, lastDist = nil }
             local lastSay, lastEquip, awayTicks = 0, 0, 0
-            local function say(msg)
-                print("[Farm] " .. msg)
-                pcall(function()
-                    game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
-                        Text = "[Farm] " .. msg, Color = Color3.fromRGB(255, 200, 0),
-                        Font = Enum.Font.Code, FontSize = Enum.FontSize.Size18,
-                    })
-                end)
-            end
             local function charParts()
                 local ch = LP.Character
                 if ch == nil then return nil, nil, nil end

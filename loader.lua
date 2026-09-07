@@ -1,5 +1,5 @@
 local Loader = {}
-Loader.VERSION = "1.6.0"
+Loader.VERSION = "1.7.0"
 function Loader.DepsOk(deps)
     if deps == nil then return false end
     if deps.CommF_ ~= true then return false end
@@ -72,6 +72,7 @@ do
         end
     end
     getgenv().HubFarm_Mods = Hub
+    do local _n = {} for _, _nm in ipairs(names) do _n[#_n+1] = Hub[_nm] ~= nil and _nm or (_nm .. "!") end say("modul: " .. table.concat(_n, ",")) end
     local Remotes = game:GetService("ReplicatedStorage"):FindFirstChild("Remotes")
     local commOk = false
     if Remotes ~= nil then
@@ -98,7 +99,7 @@ do
     game:GetService("Players").LocalPlayer.Idled:Connect(function()
         game:GetService("VirtualUser"):ClickButton2(Vector2.new())
     end)
-    if getgenv().HubFarm == true then say("Farm: AKTIF (auto-kill musuh terdekat)") else say("Farm: mati (set getgenv().HubFarm=true lalu re-run untuk nyala)") end
+    if getgenv().HubFarm == true then say("Farm: AKTIF (auto-kill musuh terdekat) flag=" .. tostring(getgenv().HubFarm)) else say("Farm: mati (set getgenv().HubFarm=true lalu re-run untuk nyala)") end
     say("anti-AFK aktif. ESP label musuh/peti/NPC menyala.")
     say("Boot selesai.")
 end
