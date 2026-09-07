@@ -114,3 +114,17 @@ def ShouldHop(empty, contested, timeouts):
     if timeouts >= 3:
         return True
     return False
+
+
+def test_safe_fallback():
+    assert UiState(True, False) == "READY"
+    assert UiState(False, False) == "SAFE"
+    assert UiState(True, True) == "UPDATE-PENDING"
+
+
+def UiState(depsOk, patchGap):
+    if patchGap is True:
+        return "UPDATE-PENDING"
+    if depsOk is not True:
+        return "SAFE"
+    return "READY"
