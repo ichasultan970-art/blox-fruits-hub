@@ -219,3 +219,23 @@ def QueueRelease(q):
         q["inflight"] = 1
         return q["pending"].pop(0)
     return None
+
+
+def test_shared_shape():
+    s = SharedNew()
+    assert s["Queue"] == {"inflight": 0, "pending": []}
+    assert s["State"]["mode"] == "none"
+    assert s["State"]["cooldown"] == 0
+    assert BuildDeps(True, True) == {"CommF_": True, "Quests": True}
+    assert BuildDeps(False, True)["CommF_"] is False
+
+
+def SharedNew():
+    return {
+        "Queue": {"inflight": 0, "pending": []},
+        "State": {"mode": "none", "quest": False, "at_mob": False, "cooldown": 0, "suspicion": 0},
+        "Deps": {},
+    }
+
+def BuildDeps(hasCommF, hasQuests):
+    return {"CommF_": hasCommF is True, "Quests": hasQuests is True}
