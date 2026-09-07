@@ -1,5 +1,5 @@
 local Loader = {}
-Loader.VERSION = "1.3.0"
+Loader.VERSION = "1.4.0"
 function Loader.DepsOk(deps)
     if deps == nil then return false end
     if deps.CommF_ ~= true then return false end
@@ -77,7 +77,8 @@ do
         local ok, comm = pcall(function() return Remotes:WaitForChild("CommF_", 5) end)
         commOk = (ok == true and comm ~= nil)
     end
-    local quests = game:GetService("Workspace"):FindFirstChild("Quests")
+    local _ws = game:GetService("Workspace")
+    local quests = _ws:FindFirstChild("NPCs") or _ws:FindFirstChild("Quests")
     local deps = Loader.BuildDeps(commOk, quests ~= nil)
     say("modul gagal: " .. (#fails == 0 and "-" or table.concat(fails, ",")))
     say("CommF_=" .. tostring(deps.CommF_) .. " Quests=" .. tostring(deps.Quests))
