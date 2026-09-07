@@ -263,3 +263,34 @@ def FarmTick(st, dt, engaged, delay):
         return "wait"
     st["cooldown"] = delay if delay is not None else 0.4
     return "fire"
+
+
+def test_render_and_ui_states():
+    items = [{"dist": 5000}, {"dist": 100}, {"dist": 900}]
+    out = RenderList(items, 60, 1500)
+    assert [i["dist"] for i in out] == [100, 900]
+    assert len(RenderList([{"dist": 10}] * 200, 60, 1500)) == 60
+    assert UiStateEx(True, False, True, "none") == "LOADING"
+    assert UiStateEx(True, True, False, "farm") == "UPDATE-PENDING"
+    assert UiStateEx(False, False, False, "none") == "SAFE"
+    assert UiStateEx(True, False, False, "farm") == "FARMING"
+    assert UiStateEx(True, False, False, "none") == "READY"
+
+
+def RenderList(items, maxLabels=60, maxDist=1500):
+    cap = maxLabels if maxLabels is not None else 60
+    lim = maxDist if maxDist is not None else 1500
+    kept = [it for it in (items or []) if it.get("dist") is not None and it["dist"] <= lim]
+    kept.sort(key=lambda it: it["dist"])
+    return kept[:cap]
+
+def UiStateEx(depsOk, patchGap, booting, active):
+    if booting is True:
+        return "LOADING"
+    if patchGap is True:
+        return "UPDATE-PENDING"
+    if depsOk is not True:
+        return "SAFE"
+    if active is not None and active != "none":
+        return "FARMING"
+    return "READY"
