@@ -64,3 +64,17 @@ def IsInRange(d):
 
 def BringOk(n):
     return n <= 5
+
+
+def test_farm_never_skips_quest():
+    assert FarmNext({"quest": False, "at_mob": False}) == "quest"
+    assert FarmNext({"quest": True, "at_mob": False}) == "travel"
+    assert FarmNext({"quest": True, "at_mob": True}) == "attack"
+
+
+def FarmNext(state):
+    if state.get("quest") is not True:
+        return "quest"
+    if state.get("at_mob") is not True:
+        return "travel"
+    return "attack"
