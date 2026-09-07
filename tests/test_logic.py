@@ -158,3 +158,28 @@ def AttackDelay():
 
 def ClickDelay():
     return max(0.05, Jitter(Uniform(0.12, 0.18), 0.03))
+
+
+import math
+
+def PlanLegs(dist, maxLeg=80):
+    if dist <= 0:
+        return []
+    n = max(1, math.ceil(dist / maxLeg))
+    return [dist / n for _ in range(n)]
+
+def LegDuration(length, speed):
+    return length / _clamp_speed(Jitter(speed or 200, 10))
+
+def BetweenLegsPause():
+    return Uniform(0.3, 0.8)
+
+
+def test_leg_plan_clamps_jumps():
+    legs = PlanLegs(1600, 80)
+    assert len(legs) == 20
+    assert all(l <= 80 for l in legs)
+    assert abs(sum(legs) - 1600) < 1e-6
+    assert PlanLegs(50, 80) == [50]
+    assert 0.3 <= BetweenLegsPause() <= 0.8
+    assert LegDuration(80, 200) > 0
