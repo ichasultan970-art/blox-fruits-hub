@@ -110,14 +110,14 @@ do
                     end
                 end
                 local target, dist = nearestEnemy(hrp.Position)
-                if target == nil then stopTween() Trav.target = nil setCollide(ch, true) return end
+                if target == nil then stopTween() Trav.target = nil setCollide(ch, true) pcall(function() hrp.Anchored = false end) return end
                 if Trav.target ~= target then
                     stopTween() Trav.target = target Trav.legs = {} Trav.li = 1 Trav.pauseUntil = 0 awayTicks = 0 Trav.lastDist = nil
                 end
                 local engaged = Combat.IsInRange(dist)
                 FState.at_mob = engaged
                 if engaged then
-                    stopTween() setCollide(ch, true) awayTicks = 0
+                    stopTween() setCollide(ch, true) pcall(function() hrp.Anchored = false end) awayTicks = 0
                     local action = Farm.Tick(FState, 0.15, true, Combat.AttackDelay())
                     if action == "fire" then
                         VU:Button1Down(Vector2.new(100, 100))
@@ -132,7 +132,7 @@ do
                         say("diduga rubberband, jeda 2 dtk")
                         return
                     end
-                    setCollide(ch, false)
+                    setCollide(ch, false) pcall(function() hrp.Anchored = true end)
                     if now >= Trav.pauseUntil and Trav.tween == nil then
                         if Trav.li > #Trav.legs then
                             Trav.legs = Teleport.PlanLegs(dist, 80)
