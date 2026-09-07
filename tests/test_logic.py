@@ -78,3 +78,17 @@ def FarmNext(state):
     if state.get("at_mob") is not True:
         return "travel"
     return "attack"
+
+
+def test_esp_caps_labels():
+    assert EspAllow(500, 10) is True
+    assert EspAllow(5000, 10) is False
+    assert EspAllow(500, 200) is False
+
+
+def EspAllow(dist, count):
+    if dist > 1500:
+        return False
+    if count >= 60:
+        return False
+    return True
