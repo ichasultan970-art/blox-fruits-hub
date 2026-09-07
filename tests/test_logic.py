@@ -239,3 +239,27 @@ def SharedNew():
 
 def BuildDeps(hasCommF, hasQuests):
     return {"CommF_": hasCommF is True, "Quests": hasQuests is True}
+
+
+def test_farm_tick_fires_once_per_cooldown():
+    st = {"quest": True, "at_mob": True, "cooldown": 0}
+    assert FarmTick(st, 0.1, True, 0.4) == "fire"
+    assert FarmTick(st, 0.1, True, 0.4) == "wait"
+    assert FarmTick(st, 0.5, True, 0.4) == "fire"
+    assert FarmTick({"quest": False, "at_mob": False, "cooldown": 0}, 0.1, True, 0.4) == "quest"
+    assert FarmTick(None, 0.1, True, 0.4) == "quest"
+
+
+def FarmTick(st, dt, engaged, delay):
+    if st is None:
+        return "quest"
+    st["cooldown"] = st.get("cooldown", 0) - (dt or 0)
+    want = FarmNext(st)
+    if want != "attack":
+        return want
+    if st["cooldown"] > 0:
+        return "wait"
+    if engaged is not True:
+        return "wait"
+    st["cooldown"] = delay if delay is not None else 0.4
+    return "fire"
