@@ -92,3 +92,25 @@ def EspAllow(dist, count):
     if count >= 60:
         return False
     return True
+
+
+def test_single_mode_lock():
+    assert ModeOk("farm", "raid") is False
+    assert ModeOk("none", "raid") is True
+    assert ShouldHop(True, False, 0) is True
+    assert ShouldHop(False, False, 0) is False
+
+
+def ModeOk(active, want):
+    if active == "none":
+        return True
+    return active == want
+
+def ShouldHop(empty, contested, timeouts):
+    if empty is True:
+        return True
+    if contested is True:
+        return True
+    if timeouts >= 3:
+        return True
+    return False
