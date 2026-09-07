@@ -28,3 +28,20 @@ def AfkDue(elapsed, idled):
     if idled is True:
         return True
     return elapsed >= 1199
+
+
+def test_tween_caps():
+    assert TweenDuration(400, 200) == 2.0
+    assert TweenDuration(400, 500) == 1.6
+    assert SplitLegs(1600) == 3
+    assert SplitLegs(500) == 1
+
+
+def _clamp_speed(s):
+    return 250 if s > 250 else s
+
+def TweenDuration(dist, speed):
+    return dist / _clamp_speed(speed)
+
+def SplitLegs(dist):
+    return 3 if dist > 1500 else 1
